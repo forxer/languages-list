@@ -1,0 +1,6 @@
+{
+	"name": "forxer/languages-list",
+	"require" : {
+		"php" : ">=5.3.0"
+	}
+}

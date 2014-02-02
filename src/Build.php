@@ -1,26 +1,34 @@
 <?php
 
-$aData = csv_to_array(__DIR__.'/Languages.csv');
+$sDestinationFile = __DIR__.'/../languages.php';
 
-$directionalities = csv_to_array(__DIR__.'/LanguagesDirectionality.csv');
+$aSourcesFiles = array(
+	'languages'            => __DIR__.'/Languages.csv',
+	'directionalities'     => __DIR__.'/LanguagesDirectionality.csv',
+	'scripts'              => __DIR__.'/LanguagesScripts.csv'
+);
 
-foreach ($directionalities as $code=>$directionality)
+$aData = csv_to_array($aSourcesFiles['languages']);
+
+$aDirectionalitiesSrc = csv_to_array($aSourcesFiles['directionalities']);
+
+foreach ($aDirectionalitiesSrc as $sLanguageCode => $aDirectionality)
 {
-	if (isset($aData[$code])) {
-		$aData[$code]['Directionality'] = $directionality['Directionality'];
+	if (isset($aData[$sLanguageCode])) {
+		$aData[$sLanguageCode]['Directionality'] = $aDirectionality['Directionality'];
 	}
 }
 
-$scripts = csv_to_array(__DIR__.'/LanguagesScripts.csv');
+$aScriptsSrc = csv_to_array($aSourcesFiles['scripts']);
 
-foreach ($scripts as $code=>$script)
+foreach ($aScriptsSrc as $sLanguageCode => $aScript)
 {
-	if (isset($aData[$code])) {
-		$aData[$code]['Script'] = $script['Script'];
+	if (isset($aData[$sLanguageCode])) {
+		$aData[$sLanguageCode]['Script'] = $aScript['Script'];
 	}
 }
 
-file_put_contents(__DIR__.'/../languages.php', "<?php\n\nreturn ".var_export($aData, true).";\n");
+file_put_contents($sDestinationFile, "<?php\n\nreturn ".var_export($aData, true).";\n");
 
 
 /**
